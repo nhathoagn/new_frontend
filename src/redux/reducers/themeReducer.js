@@ -1,11 +1,19 @@
 import { GLOBALTYPES } from '../actions/globalTypes'
 
-const initialState = false
+const initialState = {
+    dark: true
+}
 
 const themeReducer = (state = initialState, action) => {
     switch (action.type){
-        case GLOBALTYPES.THEME:
-            return action.payload;
+        case GLOBALTYPES.TOGGLE_THEME:
+            return {
+                dark: action.dark
+            };
+        case GLOBALTYPES.SET_THEME:
+            return {
+                dark: action.dark
+            }
         default:
             return state;
     }

@@ -1,69 +1,44 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {AiOutlineEye, AiOutlineEyeInvisible} from "react-icons/ai";
-import {Nav} from "../components";
-import {useAppContext} from "../context/useContext";
-import {Navigate, NavLink} from "react-router-dom";
+import {NavLink} from "react-router-dom";
 import {toast} from "react-toastify";
 import {useNavigate} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {register} from "../../redux/actions/authAction";
+import Nav from "../../components/NAV/Nav";
 
 const Register = () => {
-    const navigate = useNavigate();
+    const {auth} = useSelector(state => state)
     const [eye, setEye] = useState(false);
     const [reEye, setReEye] = useState(false);
+    const dispath = useDispatch()
+    const navigate = useNavigate()
     // const {dark, user,} = useAppContext();
     const dark = true
 
     const [loading, setLoading] = useState(false);
-    const initState = {
-        username: "",
-        fullname: "",
-        email: "",
-        password: "",
-        rePassword: "",
-        gender: "male",
-    };
-    const [state, setState] = useState(initState);
+    const initialState = {
+        fullname: '', username: '', email: '', password: '', rePassword: '', gender: 'male'
+    }
+    const [userData, setUserData] = useState(initialState);
     const handleChangeInput = (e) => {
-        setState({...state, [e.target.name]: e.target.value});
+       const  { name, value} = e.target;
+        setUserData({...userData,[name]:value})
     };
 
-    const register = async () => {
+    const handleSubmit = async () => {
         setLoading(true);
-        try {
-            // const {name, password, rePassword, secret} = state;
-            // if (name.includes("admin")) {
-            //     toast.error(`Name cannot include "admin"`);
-            //     setLoading(false);
-            //     return;
-            // }
-            // const email = state.email.toLowerCase();
-            // const {data} = await autoFetch.post("/api/auth/register", {
-            //     name,
-            //     email,
-            //     password,
-            //     rePassword,
-            //     secret,
-            // });
-            // toast.success(data?.msg || "Register success!");
-            // setState(initState);
-            // setLoading(false);
-            // setTimeout(() => {
-            //     navigate("/login");
-            // }, 3000);
-            console.log(state)
-        } catch (error) {
-            setLoading(false);
-            console.log(error);
-            toast.error(error?.response?.data?.msg || "Something went wrong!");
-        }
+        dispath(register(userData))
     };
 
-    // if (user) {
-    //     return <Navigate to='/' />;
-    // }
+    useEffect(() =>{
+        if(auth.token){
+            navigate("/")
+        }
+    },[auth.token, navigate])
     return (
         <div>
-            <Nav />
+            <Nav/>
             <div
                 className={`bg-[#5c7bd1] dark:bg-[#4E4F50] h-screen w-screen flex items-center relative transition-50 overflow-hidden md:grid-cols-3 `}
                 style={{
@@ -112,8 +87,7 @@ const Register = () => {
                         <form
                             className='mt-[13px] sm:mt-[15px] md:mt-[20px] font-bold '
                             onSubmit={(e) => {
-                                e.preventDefault();
-                                register();
+                                handleSubmit();
                             }}>
                             {/* name and email */}
                             <div className='grid grid-cols-2 gap-x-2 md:gap-x-3 '>
@@ -126,7 +100,7 @@ const Register = () => {
                                         type='text'
                                         className='input-register '
                                         placeholder='Jack Frost'
-                                        name='name'
+                                        name='fullname'
                                         onChange={(e) => handleChangeInput(e)}
                                     />
                                 </div>
@@ -139,7 +113,7 @@ const Register = () => {
                                         type='text'
                                         className='input-register '
                                         placeholder='Jack Frost'
-                                        name='name'
+                                        name='username'
                                         onChange={(e) => handleChangeInput(e)}
                                     />
                                 </div>
@@ -225,19 +199,15 @@ const Register = () => {
                             <div className='mt-4 md:mt-[25px] sm:grid grid-cols-2 gap-x-2 md:gap-x-3'>
 
                                 <div className="flex items-center">
-                                    <input id="default-radio-1" type="radio" value="" name="default-radio"   onChange={(e) => handleChangeInput(e)}
-                                           className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
-                                    <label htmlFor="default-radio-1"
-                                           className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                                        Male
+                                    <label htmlFor="male">
+                                        Male: <input type="radio" id="male" name="gender"
+                                                     value="male" defaultChecked onChange={handleChangeInput} />
                                     </label>
                                 </div>
                                 <div className="flex items-center">
-                                    <input checked id="default-radio-2" type="radio" value=""   onChange={(e) => handleChangeInput(e)}
-                                           className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
-                                    <label htmlFor="default-radio-2"
-                                           className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                                        Female
+                                    <label htmlFor="female">
+                                        Female: <input type="radio" id="female" name="gender"
+                                                       value="female" onChange={handleChangeInput} />
                                     </label>
                                 </div>
 

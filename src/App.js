@@ -1,30 +1,20 @@
-import logo from "./logo.svg";
+
 import "./App.css";
-import Home from "./page/home/home";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Landing from "./page/landing/landing";
-import {ToastContainer} from "react-toastify";
+
+import Register from "./page/landing/register";
+import Login from "./page/landing/login";
 
 function App() {
     const dark = true
   return (
     <div className={`${dark ? "dark" : ""} relative `}>
-      {/*<Home />*/}
-        <ToastContainer
-            position='top-right'
-            autoClose={2000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover={false}
-            theme={dark ? "dark" : "light"}
-        />
       <BrowserRouter>
             <Routes>
                 <Route path="/" element={<Landing/>}/>
+                <Route path="/register" element={<Register/>}/>
+                <Route path="/login" element={<Login/>}/>
             </Routes>
       </BrowserRouter>
     </div>

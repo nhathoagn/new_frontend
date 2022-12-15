@@ -1,4 +1,5 @@
 import {useNavigate} from "react-router-dom";
+import Nav from "../../components/NAV/Nav";
 
 const Home = () => {
     const navigate = useNavigate();
@@ -6,7 +7,7 @@ const Home = () => {
 
     return (
         <div>
-
+            <Nav/>
             <div className='w-screen h-screen '>
                 {dark && (
                     <div
@@ -22,7 +23,7 @@ const Home = () => {
                 />
 
                 <div className='top-[13vh] md:top-[15vh] left-10 text-[40px] sm:text-[60px] md:text-[80px] font-semibold z-10 absolute text-[#210028] dark:text-sky-300 raleway '>
-                    Hello World
+                    Vkinsta
                     <div className='text-[25px] sm:text-[35px] md:text-[40px] text-pink-600 font-light raleway-light '>
                         where start everything!
                     </div>
